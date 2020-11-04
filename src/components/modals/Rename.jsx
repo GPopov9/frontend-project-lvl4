@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import { renameChannelAsync } from '../../reducers/index.js'
+import { renameChannelAsync } from '../../reducers/index.js';
 
 export default ({ modalInfo, handleClose }) => {
   const dispatch = useDispatch();
+
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
 
   const renameChannel = async (values, actions) => {
     const data = {
       name: values.name,
       id: modalInfo.channel.id,
-    }
+    };
 
     try {
       await dispatch(renameChannelAsync(data));
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
-      actions.setStatus('Network Error!')
+      actions.setStatus('Network Error!');
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -29,8 +34,7 @@ export default ({ modalInfo, handleClose }) => {
     },
     onSubmit: renameChannel,
     onReset: () => handleClose(),
-  })
-
+  });
 
   return (
     <Modal show onHide={handleClose}>
@@ -38,7 +42,7 @@ export default ({ modalInfo, handleClose }) => {
         <Modal.Title>Channel Rename</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
             <Form.Label>New Channel Name</Form.Label>
             <Form.Control
@@ -48,7 +52,8 @@ export default ({ modalInfo, handleClose }) => {
               value={formik.values.name}
               required
               disabled={formik.isSubmitting}
-              />
+              ref={inputRef}
+            />
           </Form.Group>
           <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Rename</Button>
           {' '}
@@ -57,5 +62,5 @@ export default ({ modalInfo, handleClose }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import { addChannelAsync } from '../../reducers/index.js'
+import { addChannelAsync } from '../../reducers/index.js';
 
 export default ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export default ({ handleClose }) => {
     const data = {
       name: values.name,
       removable: true,
-    }
+    };
 
     try {
       await dispatch(addChannelAsync(data));
@@ -20,18 +20,17 @@ export default ({ handleClose }) => {
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
-      actions.setStatus('Network Error!')
+      actions.setStatus('Network Error!');
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
-      name: ''
+      name: '',
     },
     onSubmit: addNewChannel,
     onReset: () => handleClose(),
-  })
-
+  });
 
   return (
     <Modal show onHide={handleClose}>
@@ -49,7 +48,7 @@ export default ({ handleClose }) => {
               value={formik.values.name}
               required
               disabled={formik.isSubmitting}
-              />
+            />
           </Form.Group>
           <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Add</Button>
           {' '}
@@ -58,5 +57,5 @@ export default ({ handleClose }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};

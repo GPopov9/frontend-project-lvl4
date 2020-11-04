@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import MessagesInput from './MessagesInput.jsx';
-
 
 const renderMessage = (data) => {
   const { id, username, message } = data;
@@ -11,17 +10,13 @@ const renderMessage = (data) => {
       :
       {message}
     </div>
-  )
-}
+  );
+};
 
 const Messages = () => {
   const activeChannelId = useSelector((state) => state.channels.activeChannelId);
-  const messages = useSelector((state) => (state.messages.filter(({ channelId }) => channelId === activeChannelId)));
-
-  console.log(messages);
-
-
-
+  const messages = useSelector((state) => (state.messages
+    .filter(({ channelId }) => channelId === activeChannelId)));
 
   return (
     <div className="col h-100">
@@ -35,7 +30,7 @@ const Messages = () => {
       </div>
 
     </div>
-  )
+  );
 };
 
 export default Messages;

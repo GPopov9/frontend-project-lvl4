@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import { addMessageAsync } from '../reducers/index.js'
+import { addMessageAsync } from '../reducers/index.js';
 
 import UserContext from '../lib/userContext.js';
 
@@ -30,7 +30,7 @@ const MessagesInput = () => {
     } catch (err) {
       actions.setStatus('Network Error');
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -57,7 +57,7 @@ const MessagesInput = () => {
         </Col>
       </Form.Row>
     </Form>
-  )
+  );
 };
 
 export default MessagesInput;

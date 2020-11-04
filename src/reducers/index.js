@@ -1,8 +1,13 @@
-
 import { combineReducers } from 'redux';
 
-import channels, { actions as channelsActions, addChannelAsync, renameChannelAsync } from './channels.js'
-import messages, { actions as messagesActions, addMessageAsync } from './messages.js'
+import channels, {
+  actions as channelsActions,
+  addChannelAsync,
+  renameChannelAsync,
+  removeChannelAsync,
+} from './channels.js';
+
+import messages, { actions as messagesActions, addMessageAsync } from './messages.js';
 
 export default combineReducers({
   messages,
@@ -14,4 +19,10 @@ const actions = {
   ...messagesActions,
 };
 
-export { actions, addMessageAsync, addChannelAsync, renameChannelAsync };
+export {
+  actions,
+  addMessageAsync,
+  addChannelAsync,
+  renameChannelAsync,
+  removeChannelAsync,
+};

@@ -29,6 +29,10 @@ export default (gon) => {
     store.dispatch(actions.renameChannel(data));
   });
 
+  socket.on('removeChannel', ({ data }) => {
+    store.dispatch(actions.removeChannel(data));
+  });
+
   render(
     <Provider store={store}>
       <UserContext.Provider value={username}>

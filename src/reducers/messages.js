@@ -4,13 +4,13 @@ import routes from '../routes.js';
 
 const addMessageAsync = createAsyncThunk(
   'messages/addMessage',
-  async({channelId, username, message}) => {
+  async ({ channelId, username, message }) => {
     const data = { attributes: { username, message } };
     const url = routes.channelMessagesPath(channelId);
     console.log(url);
     await axios.post(url, { data });
-  }
-)
+  },
+);
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -22,10 +22,10 @@ const messagesSlice = createSlice({
     addMessages: (state, { payload }) => {
       state.push(...payload);
     },
-  }
+  },
 
 });
 
-const actions = messagesSlice.actions;
+const { actions } = messagesSlice;
 export { actions, addMessageAsync };
 export default messagesSlice.reducer;

@@ -4,23 +4,31 @@ import routes from '../routes.js';
 
 const addChannelAsync = createAsyncThunk(
   'channels/addChannel',
-  async({ name, removable }) => {
+  async ({ name, removable }) => {
     const data = { attributes: { name, removable } };
     const url = routes.channelsPath();
     console.log(url);
     await axios.post(url, { data });
-  }
-)
+  },
+);
 
 const renameChannelAsync = createAsyncThunk(
   'channels/renameChannel',
-  async({ name, id }) => {
+  async ({ name, id }) => {
     const data = { attributes: { name } };
     const url = routes.channelPath(id);
     console.log(url);
     await axios.patch(url, { data });
-  }
-)
+  },
+);
+
+const removeChannelAsync = createAsyncThunk(
+  'channels/removeChannel',
+  async (id) => {
+    const url = routes.channelPath(id);
+    await axios.delete(url);
+  },
+);
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -33,6 +41,8 @@ const channelsSlice = createSlice({
       state.items.push(...payload);
     },
 
+    /* eslint-disable no-param-reassign */
+
     addChannel: (state, { payload }) => {
       state.items.push(payload);
       state.activeChannelId = payload.id;
@@ -42,16 +52,25 @@ const channelsSlice = createSlice({
       state.activeChannelId = payload;
     },
 
-    renameChannel: (state, { payload: {id, attributes } }) => {
+    renameChannel: (state, { payload: { id, attributes } }) => {
       const channel = state.items.find((item) => item.id === id);
-      //console.log(payload);
-      //console.log(data);
       channel.name = attributes.name;
-    }
-  }
+    },
 
+    removeChannel: (state, { payload: { id } }) => {
+      state.items = state.items.filter((item) => item.id !== id);
+      state.activeChannelId = state.items[0].id;
+    },
+  },
 });
 
-const actions = channelsSlice.actions;
-export { actions, addChannelAsync, renameChannelAsync };
+/* eslint-enable no-param-reassign */
+
+const { actions } = channelsSlice;
+export {
+  actions,
+  addChannelAsync,
+  renameChannelAsync,
+  removeChannelAsync,
+};
 export default channelsSlice.reducer;
