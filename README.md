@@ -16,3 +16,5 @@ $ make install
 $ make start
 # open http://localhost:5000
 ```
+## Link
+https://chat-app-hexlet.herokuapp.com/
