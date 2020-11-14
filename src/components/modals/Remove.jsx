@@ -34,10 +34,8 @@ export default ({ modalInfo, handleClose }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
-            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Remove</Button>
-            {' '}
+            <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Remove</Button>
             <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
-            {' '}
           </Form.Group>
         </Form>
       </Modal.Body>

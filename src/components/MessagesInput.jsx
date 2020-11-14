@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 
 import { addMessageAsync } from '../reducers/index.js';
 
-import UserContext from '../lib/userContext.js';
+import UserContext from '../utils/userContext.js';
 
 const MessagesInput = () => {
   const username = useContext(UserContext);
@@ -26,9 +26,8 @@ const MessagesInput = () => {
     try {
       await dispatch(addMessageAsync(data));
       actions.resetForm();
-      actions.setSumbitting(false);
     } catch (err) {
-      actions.setStatus('Network Error');
+      actions.setStatus('There is a network error. Please, try again.');
     }
   };
 
@@ -49,13 +48,18 @@ const MessagesInput = () => {
             placeholder="Message..."
             value={formik.values.message}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             disabled={formik.isSubmitting}
           />
         </Col>
         <Col sm={1}>
-          <Button variant="primary" type="submit">Send</Button>
+          <Button variant="primary" type="submit" disabled={formik.isSubmitting || formik.values.message === ''}>Send</Button>
         </Col>
       </Form.Row>
+      <Form.Control.Feedback type="invalid" className="d-block">
+        {formik.status}
+        &nbsp;
+      </Form.Control.Feedback>
     </Form>
   );
 };

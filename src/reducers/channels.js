@@ -7,7 +7,6 @@ const addChannelAsync = createAsyncThunk(
   async ({ name, removable }) => {
     const data = { attributes: { name, removable } };
     const url = routes.channelsPath();
-    console.log(url);
     await axios.post(url, { data });
   },
 );
@@ -17,7 +16,6 @@ const renameChannelAsync = createAsyncThunk(
   async ({ name, id }) => {
     const data = { attributes: { name } };
     const url = routes.channelPath(id);
-    console.log(url);
     await axios.patch(url, { data });
   },
 );

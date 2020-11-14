@@ -1,7 +1,7 @@
 {
   "name": "frontend_l4_chat_project",
   "version": "0.0.1",
-  "description": "",
+  "description": "Hexlet Slack-Chat Project",
   "main": "dist/index.js",
   "bin": {
     "slack": "dist/bin/slack.js"
@@ -19,11 +19,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+    "url": "git+https://github.com/GPopov9/frontend-project-lvl4"
   },
-  "author": "Kirill Mokevnin",
+  "author": "George Popov",
   "license": "ISC",
-  "homepage": "",
+  "homepage": "https://chat-app-hexlet.herokuapp.com/",
   "dependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
@@ -58,7 +58,8 @@
     "redux": "^4.0.5",
     "regenerator-runtime": "^0.13.7",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.1"
+    "socket.io-client": "^2.3.1",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

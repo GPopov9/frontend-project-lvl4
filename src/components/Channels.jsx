@@ -43,7 +43,7 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
         <span>Channels</span>
-        <button type="button" className="ml-auto p-0 btn btn-link" onClick={addChannelModal}>+</button>
+        <button type="button" className="ml-auto p-0 btn btn-success btn-lg" onClick={addChannelModal}> + </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {

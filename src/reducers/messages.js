@@ -7,7 +7,6 @@ const addMessageAsync = createAsyncThunk(
   async ({ channelId, username, message }) => {
     const data = { attributes: { username, message } };
     const url = routes.channelMessagesPath(channelId);
-    console.log(url);
     await axios.post(url, { data });
   },
 );
@@ -22,6 +21,9 @@ const messagesSlice = createSlice({
     addMessages: (state, { payload }) => {
       state.push(...payload);
     },
+  },
+  extraReducers: {
+    [addMessageAsync.rejected]: () => { throw new Error(); },
   },
 
 });

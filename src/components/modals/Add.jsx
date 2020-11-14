@@ -50,10 +50,8 @@ export default ({ handleClose }) => {
               disabled={formik.isSubmitting}
             />
           </Form.Group>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Add</Button>
-          {' '}
+          <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Add</Button>
           <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
-          {' '}
         </Form>
       </Modal.Body>
     </Modal>
