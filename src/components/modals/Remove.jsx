@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 
 import { removeChannelAsync } from '../../reducers/index.js';
 
-export default ({ modalInfo, handleClose }) => {
+export default ({ handleClose, modalInfo }) => {
   const dispatch = useDispatch();
 
   const removeChannel = async (values, actions) => {
@@ -14,7 +14,7 @@ export default ({ modalInfo, handleClose }) => {
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
-      actions.setStatus('Network Error!');
+      actions.setStatus('There is a network error. Please, try again.');
     }
   };
 
@@ -23,7 +23,7 @@ export default ({ modalInfo, handleClose }) => {
       id: modalInfo.channel.id,
     },
     onSubmit: removeChannel,
-    onReset: () => handleClose(),
+    onReset: handleClose,
   });
 
   return (
@@ -34,6 +34,7 @@ export default ({ modalInfo, handleClose }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
+            <h6 className="text-danger">{formik.status}</h6>
             <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Remove</Button>
             <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
           </Form.Group>

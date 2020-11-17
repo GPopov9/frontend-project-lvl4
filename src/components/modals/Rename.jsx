@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 
 import { renameChannelAsync } from '../../reducers/index.js';
 
-export default ({ modalInfo, handleClose }) => {
+export default ({ handleClose, modalInfo }) => {
   const dispatch = useDispatch();
 
   const inputRef = useRef();
@@ -24,7 +24,7 @@ export default ({ modalInfo, handleClose }) => {
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
-      actions.setStatus('Network Error!');
+      actions.setStatus('There is a network error. Please, try again.');
     }
   };
 
@@ -33,7 +33,7 @@ export default ({ modalInfo, handleClose }) => {
       name: modalInfo.channel.name,
     },
     onSubmit: renameChannel,
-    onReset: () => handleClose(),
+    onReset: handleClose,
   });
 
   return (
@@ -55,10 +55,9 @@ export default ({ modalInfo, handleClose }) => {
               ref={inputRef}
             />
           </Form.Group>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Rename</Button>
-          {' '}
+          <h6 className="text-danger">{formik.status}</h6>
+          <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting}>Rename</Button>
           <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
-          {' '}
         </Form>
       </Modal.Body>
     </Modal>

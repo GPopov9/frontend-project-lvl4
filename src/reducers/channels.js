@@ -35,12 +35,7 @@ const channelsSlice = createSlice({
     activeChannelId: null,
   },
   reducers: {
-    addChannels: (state, { payload }) => {
-      state.items.push(...payload);
-    },
-
     /* eslint-disable no-param-reassign */
-
     addChannel: (state, { payload }) => {
       state.items.push(payload);
       state.activeChannelId = payload.id;
@@ -59,6 +54,11 @@ const channelsSlice = createSlice({
       state.items = state.items.filter((item) => item.id !== id);
       state.activeChannelId = state.items[0].id;
     },
+  },
+  extraReducers: {
+    [addChannelAsync.rejected]: () => { throw new Error(); },
+    [renameChannelAsync.rejected]: () => { throw new Error(); },
+    [removeChannelAsync.rejected]: () => { throw new Error(); },
   },
 });
 

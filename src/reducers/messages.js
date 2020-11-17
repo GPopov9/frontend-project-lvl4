@@ -18,9 +18,6 @@ const messagesSlice = createSlice({
     addMessage: (state, { payload }) => {
       state.push(payload);
     },
-    addMessages: (state, { payload }) => {
-      state.push(...payload);
-    },
   },
   extraReducers: {
     [addMessageAsync.rejected]: () => { throw new Error(); },

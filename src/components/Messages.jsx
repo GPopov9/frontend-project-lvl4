@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import MessagesInput from './MessagesInput.jsx';
+import { selectMessages } from '../utils/selectors';
 
 const renderMessage = (data) => {
   const { id, username, message } = data;
@@ -14,10 +15,7 @@ const renderMessage = (data) => {
 };
 
 const Messages = () => {
-  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
-  const messages = useSelector((state) => (state.messages
-    .filter(({ channelId }) => channelId === activeChannelId)));
-
+  const messages = useSelector(selectMessages);
   return (
     <div className="col h-100">
       <div className="d-flex flex-column h-100">

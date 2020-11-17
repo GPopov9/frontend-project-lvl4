@@ -3,12 +3,12 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import Modals from './modals/index.js';
 
-const renderModal = (modalInfo, handleClose) => {
+const renderModal = (handleClose, modalInfo) => {
   if (!modalInfo.type) {
     return null;
   }
   const Item = Modals(modalInfo.type);
-  return <Item modalInfo={modalInfo} handleClose={handleClose} />;
+  return <Item handleClose={handleClose} modalInfo={modalInfo} />;
 };
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
         removeChannelModal={removeChannelModal}
       />
       <Messages />
-      {renderModal(modalInfo, handleClose)}
+      {renderModal(handleClose, modalInfo)}
     </div>
   );
 };

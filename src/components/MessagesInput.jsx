@@ -48,7 +48,6 @@ const MessagesInput = () => {
             placeholder="Message..."
             value={formik.values.message}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             disabled={formik.isSubmitting}
           />
         </Col>
@@ -58,7 +57,6 @@ const MessagesInput = () => {
       </Form.Row>
       <Form.Control.Feedback type="invalid" className="d-block">
         {formik.status}
-        &nbsp;
       </Form.Control.Feedback>
     </Form>
   );

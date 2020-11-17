@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { actions } from '../reducers/channels';
+import { selectActiveChannel, selectChannels } from '../utils/selectors';
 
 const renderChannel = ({
   channel: { id, name, removable }, activeChannel, makeChannelActive, handleRename, handleRemove,
@@ -29,10 +30,8 @@ const renderChannel = ({
 };
 
 const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) => {
-  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
-  const activeChannel = useSelector((state) => state.channels.items
-    .find(({ id }) => id === activeChannelId));
-  const channels = useSelector((state) => state.channels.items);
+  const activeChannel = useSelector(selectActiveChannel);
+  const channels = useSelector(selectChannels);
   const dispatch = useDispatch();
 
   const handleRename = () => renameChannelModal(activeChannel.id, activeChannel.name);

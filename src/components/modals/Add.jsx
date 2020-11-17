@@ -20,7 +20,7 @@ export default ({ handleClose }) => {
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
-      actions.setStatus('Network Error!');
+      actions.setStatus('There is a network error. Please, try again.');
     }
   };
 
@@ -29,7 +29,7 @@ export default ({ handleClose }) => {
       name: '',
     },
     onSubmit: addNewChannel,
-    onReset: () => handleClose(),
+    onReset: handleClose,
   });
 
   return (
@@ -38,7 +38,7 @@ export default ({ handleClose }) => {
         <Modal.Title>Add Channel</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
             <Form.Label>Channel Name</Form.Label>
             <Form.Control
@@ -50,6 +50,7 @@ export default ({ handleClose }) => {
               disabled={formik.isSubmitting}
             />
           </Form.Group>
+          <h6 className="text-danger">{formik.status}</h6>
           <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Add</Button>
           <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
         </Form>

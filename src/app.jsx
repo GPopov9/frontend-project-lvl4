@@ -1,17 +1,26 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import store from './utils/store.js';
+import { configureStore } from '@reduxjs/toolkit';
 import getUsername from './utils/username.js';
 import UserContext from './utils/userContext.js';
-import { actions } from './reducers/index.js';
+import rootReducer, { actions } from './reducers/index.js';
 import socket from './utils/socket.js';
 import App from './components/App.jsx';
 
 export default (gon) => {
-  store.dispatch(actions.addChannels(gon.channels));
-  store.dispatch(actions.setActiveChannel(gon.currentChannelId));
-  store.dispatch(actions.addMessages(gon.messages));
+  const preloadedState = {
+    channels: {
+      items: gon.channels,
+      activeChannelId: gon.currentChannelId,
+    },
+    messages: gon.messages,
+  };
+
+  const store = configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
 
   const username = getUsername();
 
