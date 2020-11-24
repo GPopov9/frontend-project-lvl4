@@ -36,7 +36,7 @@ const RemoveChannelModal = ({ handleClose, modalInfo }) => {
           <Form.Group>
             <h6 className="text-danger">{formik.status}</h6>
             <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Remove</Button>
-            <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
+            <Button variant="secondary" type="reset">Cancel</Button>
           </Form.Group>
         </Form>
       </Modal.Body>

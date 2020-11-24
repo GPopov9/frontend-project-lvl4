@@ -60,7 +60,7 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
           </Form.Group>
           {formik.status && (<div className="text-danger">{formik.status}</div>)}
           <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Rename</Button>
-          <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
+          <Button variant="secondary" type="reset">Cancel</Button>
         </Form>
       </Modal.Body>
     </Modal>
