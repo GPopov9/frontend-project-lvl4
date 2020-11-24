@@ -1,12 +1,15 @@
 import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
 import routes from '../../routes';
-import { schemaChannel } from '../../utils/validation';
+import { selectChannelNames } from '../../utils/selectors';
 
 const RenameChannelModal = ({ handleClose, modalInfo }) => {
   const url = routes.channelPath(modalInfo.channel.id);
+  const channelsNames = useSelector(selectChannelNames);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -34,8 +37,9 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
       name: modalInfo.channel.name,
     },
     onSubmit: renameChannel,
-    onReset: handleClose,
-    validationSchema: schemaChannel,
+    validationSchema: yup.object().shape({
+      name: yup.string().required().notOneOf(channelsNames),
+    }),
     validateOnMount: true,
   });
 
@@ -60,7 +64,7 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
           </Form.Group>
           {formik.status && (<div className="text-danger">{formik.status}</div>)}
           <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Rename</Button>
-          <Button variant="secondary" type="reset">Cancel</Button>
+          <Button variant="secondary" onClick={handleClose}>Cancel</Button>
         </Form>
       </Modal.Body>
     </Modal>

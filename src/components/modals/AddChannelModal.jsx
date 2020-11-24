@@ -1,13 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-
 import axios from 'axios';
+import * as yup from 'yup';
 import routes from '../../routes';
-import { schemaChannel } from '../../utils/validation';
+import { selectChannelNames } from '../../utils/selectors';
 
 const AddChannelModal = ({ handleClose }) => {
   const url = routes.channelsPath();
+  const channelsNames = useSelector(selectChannelNames);
 
   const addNewChannel = async (values, actions) => {
     const data = {
@@ -31,8 +33,9 @@ const AddChannelModal = ({ handleClose }) => {
       name: '',
     },
     onSubmit: addNewChannel,
-    onReset: handleClose,
-    validationSchema: schemaChannel,
+    validationSchema: yup.object().shape({
+      name: yup.string().required().notOneOf(channelsNames),
+    }),
     validateOnMount: true,
   });
 
@@ -56,7 +59,7 @@ const AddChannelModal = ({ handleClose }) => {
           </Form.Group>
           {formik.status && <div className="text-danger">{formik.status}</div>}
           <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Add</Button>
-          <Button variant="secondary" type="reset">Cancel</Button>
+          <Button variant="secondary" onClick={handleClose}>Cancel</Button>
         </Form>
       </Modal.Body>
     </Modal>

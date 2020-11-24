@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
 import routes from '../routes.js';
-import { schemaMessage } from '../utils/validation';
 import UserContext from '../utils/userContext.js';
 
 const MessagesInput = () => {
@@ -33,7 +33,9 @@ const MessagesInput = () => {
       message: '',
     },
     onSubmit: handleSubmit,
-    validationSchema: schemaMessage,
+    validationSchema: yup.object().shape({
+      message: yup.string().required(),
+    }),
     validateOnMount: true,
   });
 
