@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
-import { actions } from '../reducers/channels';
+import { actions } from '../slices/channels';
 import { selectActiveChannel, selectChannels } from '../utils/selectors';
 
 const renderChannel = ({

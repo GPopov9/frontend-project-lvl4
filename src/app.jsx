@@ -2,9 +2,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import getUsername from './utils/username.js';
+import setUsername from './utils/username.js';
 import UserContext from './utils/userContext.js';
-import rootReducer, { actions } from './reducers/index.js';
+import rootReducer, { actions } from './slices/index.js';
 import socket from './utils/socket.js';
 import App from './components/App.jsx';
 
@@ -22,7 +22,7 @@ export default (gon) => {
     preloadedState,
   });
 
-  const username = getUsername();
+  const username = setUsername();
 
   socket.on('newMessage', ({ data }) => {
     const { attributes } = data;

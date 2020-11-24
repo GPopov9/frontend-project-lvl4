@@ -1,22 +1,24 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import { addChannelAsync } from '../../reducers/index.js';
+import axios from 'axios';
+import routes from '../../routes';
+import { schemaChannel } from '../../utils/validation';
 
-export default ({ handleClose }) => {
-  const dispatch = useDispatch();
+const AddChannelModal = ({ handleClose }) => {
+  const url = routes.channelsPath();
 
   const addNewChannel = async (values, actions) => {
     const data = {
-      name: values.name,
-      removable: true,
+      attributes: {
+        name: values.name,
+        removable: true,
+      },
     };
 
     try {
-      await dispatch(addChannelAsync(data));
-      console.log(data);
+      await axios.post(url, { data });
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
@@ -30,6 +32,8 @@ export default ({ handleClose }) => {
     },
     onSubmit: addNewChannel,
     onReset: handleClose,
+    validationSchema: schemaChannel,
+    validateOnMount: true,
   });
 
   return (
@@ -50,11 +54,13 @@ export default ({ handleClose }) => {
               disabled={formik.isSubmitting}
             />
           </Form.Group>
-          <h6 className="text-danger">{formik.status}</h6>
-          <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>Add</Button>
-          <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
+          {formik.status && <div className="text-danger">{formik.status}</div>}
+          <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Add</Button>
+          <Button variant="secondary" type="reset">Cancel</Button>
         </Form>
       </Modal.Body>
     </Modal>
   );
 };
+
+export default AddChannelModal;

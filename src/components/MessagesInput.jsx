@@ -1,30 +1,27 @@
 import React, { useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
-
-import { addMessageAsync } from '../reducers/index.js';
-
+import axios from 'axios';
+import routes from '../routes.js';
+import { schemaMessage } from '../utils/validation';
 import UserContext from '../utils/userContext.js';
 
 const MessagesInput = () => {
   const username = useContext(UserContext);
   const activeChannelId = useSelector((state) => state.channels.activeChannelId);
-
-  const dispatch = useDispatch();
+  const url = routes.channelMessagesPath(activeChannelId);
 
   const handleSubmit = async (values, actions) => {
-    if (values.message.length === 0) {
-      return;
-    }
     const data = {
-      channelId: activeChannelId,
-      username,
-      message: values.message,
+      attributes: {
+        username,
+        message: values.message,
+      },
     };
 
     try {
-      await dispatch(addMessageAsync(data));
+      await axios.post(url, { data });
       actions.resetForm();
     } catch (err) {
       actions.setStatus('There is a network error. Please, try again.');
@@ -36,6 +33,8 @@ const MessagesInput = () => {
       message: '',
     },
     onSubmit: handleSubmit,
+    validationSchema: schemaMessage,
+    validateOnMount: true,
   });
 
   return (
@@ -52,7 +51,7 @@ const MessagesInput = () => {
           />
         </Col>
         <Col sm={1}>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting || formik.values.message === ''}>Send</Button>
+          <Button variant="primary" type="submit" disabled={formik.isSubmitting || formik.errors.message}>Send</Button>
         </Col>
       </Form.Row>
       <Form.Control.Feedback type="invalid" className="d-block">

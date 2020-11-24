@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import axios from 'axios';
+import routes from '../../routes';
+import { schemaChannel } from '../../utils/validation';
 
-import { renameChannelAsync } from '../../reducers/index.js';
-
-export default ({ handleClose, modalInfo }) => {
-  const dispatch = useDispatch();
+const RenameChannelModal = ({ handleClose, modalInfo }) => {
+  const url = routes.channelPath(modalInfo.channel.id);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -15,12 +15,13 @@ export default ({ handleClose, modalInfo }) => {
 
   const renameChannel = async (values, actions) => {
     const data = {
-      name: values.name,
-      id: modalInfo.channel.id,
+      attributes: {
+        name: values.name,
+      },
     };
 
     try {
-      await dispatch(renameChannelAsync(data));
+      await axios.patch(url, { data });
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
@@ -34,6 +35,8 @@ export default ({ handleClose, modalInfo }) => {
     },
     onSubmit: renameChannel,
     onReset: handleClose,
+    validationSchema: schemaChannel,
+    validateOnMount: true,
   });
 
   return (
@@ -55,11 +58,13 @@ export default ({ handleClose, modalInfo }) => {
               ref={inputRef}
             />
           </Form.Group>
-          <h6 className="text-danger">{formik.status}</h6>
-          <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting}>Rename</Button>
+          {formik.status && (<div className="text-danger">{formik.status}</div>)}
+          <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Rename</Button>
           <Button variant="secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
         </Form>
       </Modal.Body>
     </Modal>
   );
 };
+
+export default RenameChannelModal;

@@ -1,16 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 
-import { removeChannelAsync } from '../../reducers/index.js';
+import axios from 'axios';
+import routes from '../../routes';
 
-export default ({ handleClose, modalInfo }) => {
-  const dispatch = useDispatch();
+const RemoveChannelModal = ({ handleClose, modalInfo }) => {
+  const url = routes.channelPath(modalInfo.channel.id);
 
   const removeChannel = async (values, actions) => {
     try {
-      await dispatch(removeChannelAsync(values.id));
+      await axios.delete(url);
       actions.setSubmitting(false);
       handleClose();
     } catch (err) {
@@ -43,3 +43,5 @@ export default ({ handleClose, modalInfo }) => {
     </Modal>
   );
 };
+
+export default RemoveChannelModal;
