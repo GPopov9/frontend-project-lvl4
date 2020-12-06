@@ -1,6 +1,7 @@
 // @ts-check
 
 import path from 'path';
+import Dotenv from 'dotenv-webpack';
 
 const isProduction = process.env.NODE_ENV === 'production';
 console.log('isProduction', isProduction);
@@ -24,6 +25,9 @@ module.exports = {
     contentBasePublicPath: '/assets/',
     compress: true,
   },
+  plugins: [
+    new Dotenv(),
+  ],
   module: {
     rules: [
       {

@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+
 import { Modal, Button, Form } from 'react-bootstrap';
+
+import { useTranslation } from 'react-i18next';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
@@ -10,6 +14,8 @@ import { selectChannelNames } from '../../utils/selectors';
 const RenameChannelModal = ({ handleClose, modalInfo }) => {
   const url = routes.channelPath(modalInfo.channel.id);
   const channelsNames = useSelector(selectChannelNames);
+
+  const { t } = useTranslation();
 
   const inputRef = useRef();
   useEffect(() => {
@@ -27,8 +33,8 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
       await axios.patch(url, { data });
       actions.setSubmitting(false);
       handleClose();
-    } catch (err) {
-      actions.setStatus('There is a network error. Please, try again.');
+    } catch (_err) {
+      actions.setStatus(t('errors.network'));
     }
   };
 
@@ -38,7 +44,7 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
     },
     onSubmit: renameChannel,
     validationSchema: yup.object().shape({
-      name: yup.string().required().notOneOf(channelsNames),
+      name: yup.string().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
     }),
     validateOnMount: true,
   });
@@ -46,25 +52,25 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
   return (
     <Modal show onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Channel Rename</Modal.Title>
+        <Modal.Title>{t('titles.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
-            <Form.Label>New Channel Name</Form.Label>
+            <Form.Label>{t('titles.newChannelName')}</Form.Label>
             <Form.Control
               name="name"
               type="text"
               onChange={formik.handleChange}
               value={formik.values.name}
-              required
               disabled={formik.isSubmitting}
               ref={inputRef}
             />
           </Form.Group>
           {formik.status && (<div className="text-danger">{formik.status}</div>)}
-          <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || formik.errors.name}>Rename</Button>
-          <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+          {formik.errors.name && (<div className="text-danger">{formik.errors.name}</div>)}
+          <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || !formik.isValid}>{t('buttons.rename')}</Button>
+          <Button variant="secondary" onClick={handleClose}>{t('buttons.cancel')}</Button>
         </Form>
       </Modal.Body>
     </Modal>

@@ -7,3 +7,5 @@ export const selectActiveChannel = ((state) => state.channels.items
 
 export const selectMessages = ((state) => state.messages
   .filter(({ channelId }) => channelId === state.channels.activeChannelId));
+
+export const selectActiveChannelId = ((state) => state.channels.activeChannelId);

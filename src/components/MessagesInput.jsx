@@ -2,15 +2,22 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+
+import { useTranslation } from 'react-i18next';
+
 import * as yup from 'yup';
 import axios from 'axios';
+
 import routes from '../routes.js';
 import UserContext from '../utils/userContext.js';
+import { selectActiveChannelId } from '../utils/selectors';
 
 const MessagesInput = () => {
   const username = useContext(UserContext);
-  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
+  const activeChannelId = useSelector(selectActiveChannelId);
   const url = routes.channelMessagesPath(activeChannelId);
+
+  const { t } = useTranslation();
 
   const handleSubmit = async (values, actions) => {
     const data = {
@@ -23,8 +30,8 @@ const MessagesInput = () => {
     try {
       await axios.post(url, { data });
       actions.resetForm();
-    } catch (err) {
-      actions.setStatus('There is a network error. Please, try again.');
+    } catch (_err) {
+      actions.setStatus(t('errors.network'));
     }
   };
 
@@ -34,7 +41,7 @@ const MessagesInput = () => {
     },
     onSubmit: handleSubmit,
     validationSchema: yup.object().shape({
-      message: yup.string().required(),
+      message: yup.string().trim().required(),
     }),
     validateOnMount: true,
   });
@@ -42,18 +49,18 @@ const MessagesInput = () => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Row>
-        <Col sm={11}>
+        <Col xs={10}>
           <Form.Control
             name="message"
             type="text"
-            placeholder="Message..."
+            placeholder={t('titles.placeholder')}
             value={formik.values.message}
             onChange={formik.handleChange}
             disabled={formik.isSubmitting}
           />
         </Col>
-        <Col sm={1}>
-          <Button variant="primary" type="submit" disabled={formik.isSubmitting || formik.errors.message}>Send</Button>
+        <Col xs={2}>
+          <Button variant="primary" type="submit" disabled={formik.isSubmitting || !formik.isValid}>{t('buttons.send')}</Button>
         </Col>
       </Form.Row>
       <Form.Control.Feedback type="invalid" className="d-block">

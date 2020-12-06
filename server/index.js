@@ -22,6 +22,7 @@ const setUpViews = (app) => {
     },
     defaultContext: {
       assetPath: (filename) => `${domain}/assets/${filename}`,
+      secret: process.env.ROLLBAR_SECRET
     },
     templates: path.join(__dirname, 'views'),
   });

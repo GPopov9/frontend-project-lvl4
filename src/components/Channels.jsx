@@ -1,5 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { useTranslation } from 'react-i18next';
+
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { actions } from '../slices/channels';
 import { selectActiveChannel, selectChannels } from '../utils/selectors';
@@ -34,6 +37,8 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
   const channels = useSelector(selectChannels);
   const dispatch = useDispatch();
 
+  const { t } = useTranslation();
+
   const handleRename = () => renameChannelModal(activeChannel.id, activeChannel.name);
   const handleRemove = () => removeChannelModal(activeChannel.id);
   const makeChannelActive = (id) => dispatch(actions.setActiveChannel(id));
@@ -41,7 +46,7 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
   return (
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
-        <span>Channels</span>
+        <span>{t('titles.channels')}</span>
         <button type="button" className="ml-auto p-0 btn btn-success btn-lg" onClick={addChannelModal}> + </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
