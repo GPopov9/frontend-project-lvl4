@@ -10,7 +10,6 @@ const channelsSlice = createSlice({
     /* eslint-disable no-param-reassign */
     addChannel: (state, { payload }) => {
       state.items.push(payload);
-      state.activeChannelId = payload.id;
     },
 
     setActiveChannel: (state, { payload }) => {
@@ -23,12 +22,14 @@ const channelsSlice = createSlice({
     },
 
     removeChannel: (state, { payload: { id } }) => {
+      const currentActiveChannel = state.activeChannelId;
       state.items = state.items.filter((item) => item.id !== id);
-      state.activeChannelId = state.items[0].id;
+      state.activeChannelId = (currentActiveChannel !== id)
+        ? currentActiveChannel
+        : state.items[0].id;
     },
   },
 });
-
 /* eslint-enable no-param-reassign */
 
 export const { actions } = channelsSlice;

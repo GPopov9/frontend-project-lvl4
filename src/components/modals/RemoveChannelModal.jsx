@@ -1,10 +1,9 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-
 import { useTranslation } from 'react-i18next';
-
 import axios from 'axios';
+
 import routes from '../../routes';
 
 const RemoveChannelModal = ({ handleClose, modalInfo }) => {
@@ -37,7 +36,7 @@ const RemoveChannelModal = ({ handleClose, modalInfo }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
-            {formik.status && (<div className="text-danger">{formik.status}</div>)}
+            {formik.status && <div className="text-danger">{formik.status}</div>}
             <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting}>{t('buttons.remove')}</Button>
             <Button variant="secondary" onClick={handleClose}>{t('buttons.cancel')}</Button>
           </Form.Group>

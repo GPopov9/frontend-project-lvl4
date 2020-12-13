@@ -1,12 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import { useTranslation } from 'react-i18next';
-
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
+
 import routes from '../../routes';
 import { selectChannelNames } from '../../utils/selectors';
 
@@ -39,7 +38,7 @@ const AddChannelModal = ({ handleClose }) => {
     },
     onSubmit: addNewChannel,
     validationSchema: yup.object().shape({
-      name: yup.string().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
+      name: yup.string().trim().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
     }),
     validateOnMount: true,
   });
@@ -63,7 +62,7 @@ const AddChannelModal = ({ handleClose }) => {
             />
           </Form.Group>
           {formik.status && <div className="text-danger">{formik.status}</div>}
-          {formik.errors.name && (<div className="text-danger">{formik.errors.name}</div>)}
+          {formik.errors.name && <div className="text-danger">{formik.errors.name}</div>}
           <Button className="mr-1" variant="primary" type="submit" disabled={formik.isSubmitting || formik.errors.name}>{t('buttons.add')}</Button>
           <Button variant="secondary" onClick={handleClose}>{t('buttons.cancel')}</Button>
         </Form>

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import faker from 'faker';
-import Cookies from 'js-cookie';
+import cookies from 'js-cookie';
 
 import UserContext from './utils/userContext.js';
 import rootReducer, { actions } from './slices/index.js';
@@ -26,15 +26,8 @@ export default (gon) => {
     preloadedState,
   });
 
-  const setUsername = () => {
-    const username = Cookies.get('username');
-    if (username) {
-      return username;
-    }
-    const newUsername = faker.internet.userName();
-    Cookies.set('username', newUsername, { expires: 30 });
-    return newUsername;
-  };
+  const username = cookies.get('username') || faker.internet.userName();
+  cookies.set('username', username);
 
   socket.on('newMessage', ({ data }) => {
     const { attributes } = data;
@@ -56,7 +49,7 @@ export default (gon) => {
 
   render(
     <Provider store={store}>
-      <UserContext.Provider value={setUsername()}>
+      <UserContext.Provider value={username}>
         <App />
       </UserContext.Provider>
     </Provider>,

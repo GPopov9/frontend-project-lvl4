@@ -1,16 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { useTranslation } from 'react-i18next';
-
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+
 import { actions } from '../slices/channels';
-import { selectActiveChannel, selectChannels } from '../utils/selectors';
+import { selectActiveChannel, selectChannels, selectActiveChannelId } from '../utils/selectors';
 
 const renderChannel = ({
-  channel: { id, name, removable }, activeChannel, makeChannelActive, handleRename, handleRemove,
+  channel: { id, name, removable }, activeChannelId, makeChannelActive, handleRename, handleRemove,
 }) => {
-  const variant = (id === activeChannel.id) ? 'primary' : 'light';
+  const variant = (id === activeChannelId) ? 'primary' : 'light';
 
   return (
     <li key={id} className="nav-item">
@@ -34,6 +33,7 @@ const renderChannel = ({
 
 const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) => {
   const activeChannel = useSelector(selectActiveChannel);
+  const activeChannelId = useSelector(selectActiveChannelId);
   const channels = useSelector(selectChannels);
   const dispatch = useDispatch();
 
@@ -47,12 +47,19 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
         <span>{t('titles.channels')}</span>
-        <button type="button" className="ml-auto p-0 btn btn-success btn-lg" onClick={addChannelModal}> + </button>
+        <button type="button" className="ml-auto p-0 btn btn-lg" onClick={addChannelModal}>
+          <span>
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" className="bi bi-plus-circle" fill="blue" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+          </span>
+        </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {
           channels.map((channel) => renderChannel({
-            channel, activeChannel, makeChannelActive, handleRename, handleRemove,
+            channel, activeChannelId, makeChannelActive, handleRename, handleRemove,
           }))
         }
       </ul>

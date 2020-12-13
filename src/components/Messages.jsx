@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import MessagesInput from './MessagesInput.jsx';
 import { selectMessages } from '../utils/selectors';
 
@@ -20,7 +21,7 @@ const Messages = () => {
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
         <div id="messages-box" className="chat-messages overflow-auto mb-3">
-          {messages.map((message) => renderMessage(message))}
+          {messages.map(renderMessage)}
         </div>
         <div className="mt-auto">
           <MessagesInput />

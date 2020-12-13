@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
-
 import { useTranslation } from 'react-i18next';
-
 import * as yup from 'yup';
 import axios from 'axios';
 
@@ -43,7 +41,7 @@ const MessagesInput = () => {
     validationSchema: yup.object().shape({
       message: yup.string().trim().required(),
     }),
-    validateOnMount: true,
+    isInitialValid: false,
   });
 
   return (

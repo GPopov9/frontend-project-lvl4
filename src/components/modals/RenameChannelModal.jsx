@@ -1,13 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
 import { Modal, Button, Form } from 'react-bootstrap';
-
 import { useTranslation } from 'react-i18next';
-
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+
 import routes from '../../routes';
 import { selectChannelNames } from '../../utils/selectors';
 
@@ -44,9 +42,8 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
     },
     onSubmit: renameChannel,
     validationSchema: yup.object().shape({
-      name: yup.string().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
+      name: yup.string().trim().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
     }),
-    validateOnMount: true,
   });
 
   return (
@@ -67,8 +64,8 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
               ref={inputRef}
             />
           </Form.Group>
-          {formik.status && (<div className="text-danger">{formik.status}</div>)}
-          {formik.errors.name && (<div className="text-danger">{formik.errors.name}</div>)}
+          {formik.status && <div className="text-danger">{formik.status}</div>}
+          {formik.errors.name && <div className="text-danger">{formik.errors.name}</div>}
           <Button variant="primary" className="mr-1" type="submit" disabled={formik.isSubmitting || !formik.isValid}>{t('buttons.rename')}</Button>
           <Button variant="secondary" onClick={handleClose}>{t('buttons.cancel')}</Button>
         </Form>
