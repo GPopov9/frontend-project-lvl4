@@ -6,8 +6,9 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 
+import { schemaChannels } from '../../schema';
 import routes from '../../routes';
-import { selectChannelNames } from '../../utils/selectors';
+import { selectChannelNames } from '../../selectors';
 
 const AddChannelModal = ({ handleClose }) => {
   const url = routes.channelsPath();
@@ -38,7 +39,7 @@ const AddChannelModal = ({ handleClose }) => {
     },
     onSubmit: addNewChannel,
     validationSchema: yup.object().shape({
-      name: yup.string().trim().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
+      name: schemaChannels(channelsNames, t('errors.long'), t('errors.duplicate')),
     }),
     validateOnMount: true,
   });

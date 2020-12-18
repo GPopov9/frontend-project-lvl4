@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Channels from './Channels.jsx';
-import Messages from './Messages.jsx';
+import Chat from './Chat.jsx';
 import Modals from './modals/index.js';
 
 const renderModal = (handleClose, modalInfo) => {
@@ -27,7 +27,7 @@ const App = () => {
         renameChannelModal={renameChannelModal}
         removeChannelModal={removeChannelModal}
       />
-      <Messages />
+      <Chat />
       {renderModal(handleClose, modalInfo)}
     </div>
   );

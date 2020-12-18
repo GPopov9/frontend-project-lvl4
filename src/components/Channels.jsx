@@ -1,35 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 
+import Channel from './Channel';
 import { actions } from '../slices/channels';
-import { selectActiveChannel, selectChannels, selectActiveChannelId } from '../utils/selectors';
-
-const renderChannel = ({
-  channel: { id, name, removable }, activeChannelId, makeChannelActive, handleRename, handleRemove,
-}) => {
-  const variant = (id === activeChannelId) ? 'primary' : 'light';
-
-  return (
-    <li key={id} className="nav-item">
-      {removable
-        ? (
-          <Dropdown as={ButtonGroup} className="btn-block mb-2" onClick={() => makeChannelActive(id)}>
-            <Button variant={variant} className="w-100">{`# ${name}`}</Button>
-            <Dropdown.Toggle split variant={variant} id="dropdown-custom-2" />
-            <Dropdown.Menu>
-              <Dropdown.Item onSelect={handleRename}>Rename</Dropdown.Item>
-              <Dropdown.Item onSelect={handleRemove}>Remove</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )
-        : (
-          <Button variant={variant} className="mb-2 btn-block" onClick={() => makeChannelActive(id)}>{`# ${name}`}</Button>
-        )}
-    </li>
-  );
-};
+import { selectActiveChannel, selectChannels, selectActiveChannelId } from '../selectors';
 
 const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) => {
   const activeChannel = useSelector(selectActiveChannel);
@@ -42,6 +17,8 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
   const handleRename = () => renameChannelModal(activeChannel.id, activeChannel.name);
   const handleRemove = () => removeChannelModal(activeChannel.id);
   const makeChannelActive = (id) => dispatch(actions.setActiveChannel(id));
+
+  /* eslint-disable react/jsx-wrap-multilines */
 
   return (
     <div className="col-3 border-right">
@@ -58,13 +35,20 @@ const Channels = ({ addChannelModal, renameChannelModal, removeChannelModal }) =
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {
-          channels.map((channel) => renderChannel({
-            channel, activeChannelId, makeChannelActive, handleRename, handleRemove,
-          }))
+          channels.map((channel) => (
+            <Channel
+              channel={channel}
+              activeChannelId={activeChannelId}
+              makeChannelActive={makeChannelActive}
+              handleRename={handleRename}
+              handleRemove={handleRemove}
+            />))
         }
       </ul>
     </div>
   );
 };
+
+/* eslint-enable react/jsx-wrap-multilines */
 
 export default Channels;

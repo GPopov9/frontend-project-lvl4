@@ -6,10 +6,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import faker from 'faker';
 import cookies from 'js-cookie';
 
-import UserContext from './utils/userContext.js';
+import UserContext from './userContext.js';
 import rootReducer, { actions } from './slices/index.js';
 import socket from './utils/socket.js';
-import './locales/i18n';
+
 import App from './components/App.jsx';
 
 export default (gon) => {

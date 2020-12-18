@@ -13,6 +13,7 @@ export default {
       errors: {
         network: 'There is a network error. Please, try again.',
         duplicate: 'Channel with such name already exists',
+        long: 'Channel name is too long',
       },
       buttons: {
         add: 'Add',

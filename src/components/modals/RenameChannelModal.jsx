@@ -6,8 +6,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 
+import { schemaChannels } from '../../schema';
 import routes from '../../routes';
-import { selectChannelNames } from '../../utils/selectors';
+import { selectChannelNames } from '../../selectors';
 
 const RenameChannelModal = ({ handleClose, modalInfo }) => {
   const url = routes.channelPath(modalInfo.channel.id);
@@ -42,7 +43,7 @@ const RenameChannelModal = ({ handleClose, modalInfo }) => {
     },
     onSubmit: renameChannel,
     validationSchema: yup.object().shape({
-      name: yup.string().trim().required(' ').notOneOf(channelsNames, t('errors.duplicate')),
+      name: schemaChannels(channelsNames, t('errors.long'), t('errors.duplicate')),
     }),
   });
 

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import MessagesInput from './MessagesInput.jsx';
-import { selectMessages } from '../utils/selectors';
+import { selectMessages } from '../selectors';
+
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef();
+  useEffect(() => elementRef.current.scrollIntoView());
+  return <div ref={elementRef} />;
+};
 
 const renderMessage = (data) => {
   const { id, username, message } = data;
@@ -18,16 +23,9 @@ const renderMessage = (data) => {
 const Messages = () => {
   const messages = useSelector(selectMessages);
   return (
-    <div className="col h-100">
-      <div className="d-flex flex-column h-100">
-        <div id="messages-box" className="chat-messages overflow-auto mb-3">
-          {messages.map(renderMessage)}
-        </div>
-        <div className="mt-auto">
-          <MessagesInput />
-        </div>
-      </div>
-
+    <div id="messages-box" className="chat-messages overflow-auto mb-3 text-break">
+      {messages.map(renderMessage)}
+      <AlwaysScrollToBottom />
     </div>
   );
 };

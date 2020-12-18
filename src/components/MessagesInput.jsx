@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -7,8 +7,9 @@ import * as yup from 'yup';
 import axios from 'axios';
 
 import routes from '../routes.js';
-import UserContext from '../utils/userContext.js';
-import { selectActiveChannelId } from '../utils/selectors';
+import UserContext from '../userContext.js';
+import { selectActiveChannelId } from '../selectors';
+import { schemaMessages } from '../schema';
 
 const MessagesInput = () => {
   const username = useContext(UserContext);
@@ -16,6 +17,11 @@ const MessagesInput = () => {
   const url = routes.channelMessagesPath(activeChannelId);
 
   const { t } = useTranslation();
+
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
   const handleSubmit = async (values, actions) => {
     const data = {
@@ -39,7 +45,7 @@ const MessagesInput = () => {
     },
     onSubmit: handleSubmit,
     validationSchema: yup.object().shape({
-      message: yup.string().trim().required(),
+      message: schemaMessages,
     }),
     isInitialValid: false,
   });
@@ -55,6 +61,7 @@ const MessagesInput = () => {
             value={formik.values.message}
             onChange={formik.handleChange}
             disabled={formik.isSubmitting}
+            ref={inputRef}
           />
         </Col>
         <Col xs={2}>
