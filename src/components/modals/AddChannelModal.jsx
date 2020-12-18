@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -15,6 +15,11 @@ const AddChannelModal = ({ handleClose }) => {
   const channelsNames = useSelector(selectChannelNames);
 
   const { t } = useTranslation();
+
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
 
   const addNewChannel = async (values, actions) => {
     const data = {
@@ -60,6 +65,7 @@ const AddChannelModal = ({ handleClose }) => {
               value={formik.values.name}
               required
               disabled={formik.isSubmitting}
+              ref={inputRef}
             />
           </Form.Group>
           {formik.status && <div className="text-danger">{formik.status}</div>}
