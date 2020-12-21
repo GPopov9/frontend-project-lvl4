@@ -47,7 +47,7 @@ const MessagesInput = () => {
     validationSchema: yup.object().shape({
       message: schemaMessages,
     }),
-    isInitialValid: false,
+    validateOnMount: true,
   });
 
   return (
